@@ -27,10 +27,12 @@ export default class Player extends Entity {
 
   /**
    * Render the zomball
+   * 
    */
   render(context: CanvasRenderingContext2D) {
     super.render(context);
 
+    if (!this.color) this.color = new Color(0, 0, 0);
     if (this.location == null) return;
 
     context.beginPath();

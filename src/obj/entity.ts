@@ -1,4 +1,5 @@
 import * as Vec2D from 'vector2d'
+import World from './world';
 
 export default class Entity {
   id: number = 0;
@@ -11,7 +12,7 @@ export default class Entity {
   destination: Vec2D.Vector | null = null;
   remove: boolean = false;
 
-  //World world;
+  world: World | null = null;
   //StateMachine brain;
 
   constructor(name: string) {

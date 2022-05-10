@@ -4,7 +4,22 @@ export const Constants: {
     height: number
   },
   PLAYER_SIZE: number,
-  PLAYER_DEFAULT_HEALTH: number
+  PLAYER_DEFAULT_HEALTH: number,
+
+  GAME_UTILIZE_PRERENDER: boolean,
+  GAME_FLIP_SIGHTS: boolean
+  GAME_STATS_UPDATE_INTERVAL: number,
+  GAME_SCORE_UPDATE_INTERVAL: number,
+  GAME_INCREASE_ZOMBALL_INTERVAL: number,
+  GAME_INCREASE_ZOMBALL_NUMBER: number,
+
+  BULLET_DAMAGE_VALUE: number,
+
+  // zomball_blood_splater_size
+  ZOMBALL_BLOOD_SPLATTER_SIZE: number,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLES: number,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN: number,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLE_MAX: number,
 } = {
   GAME_SIZE: {
     width: 800, 
@@ -12,21 +27,26 @@ export const Constants: {
   },
   PLAYER_SIZE: 50,
   PLAYER_DEFAULT_HEALTH: 100,
+
+  GAME_UTILIZE_PRERENDER: true,
+  GAME_FLIP_SIGHTS: false,
+  GAME_STATS_UPDATE_INTERVAL: 1.0,
+  GAME_SCORE_UPDATE_INTERVAL: 0.5,
+  GAME_INCREASE_ZOMBALL_INTERVAL: 10.0,
+  GAME_INCREASE_ZOMBALL_NUMBER: 1.0,
+
+  BULLET_DAMAGE_VALUE: 100.0,
+
+  ZOMBALL_BLOOD_SPLATTER_SIZE: 25,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLES: 20,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN: 1,
+  ZOMBALL_BLOOD_SPLATTER_CIRCLE_MAX: 10
 }
 
 
 // num LOG_DEBUG = 3;
 // num LOG_INFO = 2;
 // num LOG_ERROR = 1;
-
-// var game_utilize_prerender = true;
-// var game_flip_sights = false;
-// var game_stats_update_interval = 1.0;
-// var game_score_update_interval = 0.5;
-// var game_increase_zomball_interval = 10.0;
-// var game_increase_zomball_number = 1.0;
-
-// var bullet_damage_value = 100.0;
 
 // var zomball_spawn_offset = 250;
 // var zomball_max_count = 50;
@@ -47,7 +67,6 @@ export const Constants: {
 // var zomball_default_health = 50.0;
 // var zomball_damage_value = 5.0;
 
-// var zomball_blood_splater_size = 25;
 // var zomball_blood_splater_circles = 20;
 // var zomball_blood_splater_cicrle_min = 1;
 // var zomball_blood_splater_cicrle_max = 10;
