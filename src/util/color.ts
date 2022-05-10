@@ -26,33 +26,52 @@ export default class Color {
   }
 
   getHsl(): [number, number, number] {
-    const max = Math.max(Math.max(this.r, this.g), this.b);
-    const min = Math.min(Math.min(this.r, this.g), this.b);
-    const d = max - min;
+    // Make r, g, and b fractions of 1
+    const r = this.r / 255;
+    const g = this.g / 255;
+    const b = this.b / 255;
+    
+    // Find greatest and smallest channel values
+    let cmin = Math.min(r, g, b);
+    let cmax = Math.max(r, g, b);
+    let delta = cmax - cmin;
+    let h = 0;
+    let s = 0;
+    let l = 0;
 
-    let h: number;
-
-    if (max == min) {
-      h = 0.0;
-    } else if (max == this.r) {
-      h = 60 * (this.g-this.b)/d;
-    } else if (max == this.g) {
-      h = 60 * (this.b-this.r)/d + 120;
-    } else { // max == b
-      h = 60 * (this.r - this.g)/d + 240;
-    }
-
-    const l = (max + min)/2;
-    let s: number;
-    if (max == min) {
-      s = 0.0;
-    } else if (l < 0.5) {
-      s = d/(2*l);
+    // Calculate hue
+    // No difference
+    if (delta == 0) {
+      h = 0;
+    // Red is max
+    } else if (cmax == r) {
+      h = ((g - b) / delta) % 6;
+    // Green is max
+    } else if (cmax == g) {
+      h = (b - r) / delta + 2;
+    // Blue is max
     } else {
-      s = d/(2 - 2*l);
+      h = (r - g) / delta + 4;
     }
 
-    return [Math.round((Math.round(h) % 360)), s, l];
+    h = Math.round(h * 60);
+    
+    // Make negative hues positive behind 360°
+    if (h < 0) {
+      h += 360;
+    }
+
+    // Calculate lightness
+    l = (cmax + cmin) / 2;
+
+    // Calculate saturation
+    s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+      
+    // Multiply l and s by 100
+    s = +(s * 100).toFixed(1);
+    l = +(l * 100).toFixed(1);
+
+    return [h, s, l];
   }
 
   getHex(): string {
