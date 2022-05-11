@@ -5,18 +5,18 @@ import drawCircle from '../util/circle';
 import { Constants } from '../constants';
 
 
-class Bullet extends Entity {
+export default class Bullet extends Entity {
   color: Color = new Color(0, 0, 0);
 
   constructor(location: Vec2.Vector, destination: Vec2.Vector) {
     super("bullet")
 
-    this.location = location;
-    this.destination = destination;
-    this.size = 2;
+    this.location = new Vec2.Vector(location.x, location.y);
+    this.destination = new Vec2.Vector(destination.x, destination.y);
+    this.size = 1;
     this.damage_value = Constants.BULLET_DAMAGE_VALUE;
-    this.color = new Color(0, 0, 0);
-    this.speed = 1000;
+    //this.color = new Color(1, 1, );
+    this.speed = 2;
   }
 
   /**
@@ -32,7 +32,6 @@ class Bullet extends Entity {
    */
   process(gameTime: number): void {
     super.process(gameTime);
-
     if (this.world == null) return;
 
     // Entity zomball = this.world.get_close_entity(this, zomball_size, 'zomball');
@@ -61,7 +60,8 @@ class Bullet extends Entity {
     // if we are moving towards the destination
     if (this.speed > 0 && !this.location.equals(this.destination)) {
       const distance_to_destination: number = this.destination.distance(this.location);
-      const heading: Vec2.Vector = this.destination.subtract(this.location).normalize();
+      const destCopy = new Vec2.Vector(this.destination.x, this.destination.y);
+      const heading: Vec2.Vector = destCopy.subtract(this.location).normalize();
       const distance_traveled = Math.min(distance_to_destination, gameTime * this.speed);
       const travel_vector = heading.mulS(distance_traveled);
 

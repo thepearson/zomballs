@@ -44,34 +44,34 @@ export default class Player extends Entity {
     context.strokeStyle = this.color.getHex();
     context.stroke();
 
-    // var health_bar_length = 50;
-    // var health_bar_width = 5;
-    // var health_bar_empty_color = 'red';
-    // var health_bar_full_color = 'green';
+    var health_bar_length = 50;
+    var health_bar_width = 5;
+    var health_bar_empty_color = 'red';
+    var health_bar_full_color = 'green';
 
-    // var line_x = Math.round(this.location.x-(this.size/2));
-    // var line_y = Math.round(this.location.y-((this.size/2) + health_bar_width));
+    var line_x = Math.round(this.location.x-(this.size/2));
+    var line_y = Math.round(this.location.y-((this.size/2) + health_bar_width));
 
-    // // if player health is less than default health
-    // if (this.health < Constants.PLAYER_DEFAULT_HEALTH) {
-    //   context.beginPath();
-    //   context.lineWidth = health_bar_width;
-    //   context.strokeStyle = health_bar_empty_color;
-    //   context.moveTo(line_x, line_y);
-    //   context.lineTo(line_x+health_bar_length, line_y);
-    //   context.stroke();
+    // if player health is less than default health
+    if (this.health < Constants.PLAYER_DEFAULT_HEALTH) {
+      context.beginPath();
+      context.lineWidth = health_bar_width;
+      context.strokeStyle = health_bar_empty_color;
+      context.moveTo(line_x, line_y);
+      context.lineTo(line_x+health_bar_length, line_y);
+      context.stroke();
 
-    //   health_bar_length = Math.round((this.health/100)*health_bar_length);
-    // }
+      health_bar_length = Math.round((this.health/100)*health_bar_length);
+    }
 
-    // if (this.health > 0) {
-    //   context.beginPath();
-    //   context.lineWidth = health_bar_width;
-    //   context.strokeStyle = health_bar_full_color;
-    //   context.moveTo(line_x, line_y);
-    //   context.lineTo(line_x+health_bar_length, line_y);
-    //   context.stroke();
-    // }
+    if (this.health > 0) {
+      context.beginPath();
+      context.lineWidth = health_bar_width;
+      context.strokeStyle = health_bar_full_color;
+      context.moveTo(line_x, line_y);
+      context.lineTo(line_x+health_bar_length, line_y);
+      context.stroke();
+    }
   }
 
   /**

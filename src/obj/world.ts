@@ -1,5 +1,6 @@
 import Entity from "./entity";
 import Player from "./player";
+import Bullet from "./bullet";
 import * as Vec2 from 'vector2d'; 
 import Color from "../util/color";
 import { Constants } from "../constants";
@@ -16,14 +17,22 @@ export default class World {
   player_score: number = 0;
   entity_id: number = 0;
 
+  draw_target: boolean = false;
   target: Vec2.Vector | null = null;
 
+  timeToDraw: number = 0;
+  dt: number = 0;
+  oldTimestamp: DOMHighResTimeStamp = 0.0;
+  fps: number = 0;
+
+  show_debug: boolean = true;
+  ;
   //Bullet bullet;
-  target_color: Color | null = null;
+  target_color: Color = new Color(255, 128, 128);
 
   constructor() {
     //this.entities = new Map();
-    this.target_color = new Color(255, 128, 128);
+    //this.target_color = new Color(255, 128, 128);
   }
 
   getEntity(id: number): Entity | null {
@@ -49,32 +58,39 @@ export default class World {
     this.target = null;
   }
 
-  // setTargetPosition(mouse_pos: Vec2.Vector) {
-  //   if (Constants.GAME_FLIP_SIGHTS == true) {
-  //     this.target = mouse_pos.subtract(this.player?.location)
-  //     //this.target = (((mouse_pos-this.player.location)*1.5)*-1.0)+this.player.location;
-  //   } else {
-  //     this.target = mouse_pos;
-  //   }
-  // }
-
-  fireBullet(): void {
-    // Bullet bullet = new Bullet(this.player.location, this.target);
-    // bullet.world = this;
-    // this.add_entity(bullet);
-    // this.target = null;
+  setTargetPosition(mouse_pos: Vec2.Vector) : void {
+    if (Constants.GAME_FLIP_SIGHTS == true) {
+      if (this.player && this.player.location instanceof Vec2.Vector) {
+        const vecCopy: Vec2.Vector = new Vec2.Vector(mouse_pos.x, mouse_pos.y);
+        this.target = vecCopy.subtract(this.player.location)
+      }
+      //this.target = (((mouse_pos-this.player.location)*1.5)*-1.0)+this.player.location;
+    } else {
+      this.target = mouse_pos;
+    }
   }
 
-  // drawTarget(context: CanvasRenderingContext2D) {
-  //   if (this.target != null) {
-  //     context.beginPath();
-  //     context.lineWidth = 1;
-  //     context.strokeStyle = this.target_color?.getHex();
-  //     context.moveTo(this.player?.location?.x, this.player?.location?.y);
-  //     context.lineTo(this.target.x, this.target.y);
-  //     context.stroke();
-  //   }
-  // }
+  fireBullet(): void {
+    if (this.player && this.player.location instanceof Vec2.Vector && this.target instanceof Vec2.Vector) {
+      const bullet: Bullet = new Bullet(this.player?.location, this.target);
+      bullet.world = this;
+      this.addEntity(bullet);
+      this.target = null;
+    }
+  }
+
+  drawTarget(context: CanvasRenderingContext2D) {
+    if (this.target != null) {
+      if (this.player instanceof Player)  {
+        context.beginPath();
+        context.lineWidth = 1;
+        context.strokeStyle = this.target_color?.getHex();
+        context.moveTo(this.player?.location?.x, this.player?.location?.y);
+        context.lineTo(this.target.x, this.target.y);
+        context.stroke();
+      }
+    }
+  }
 
   // countEntities(type: string): number {
   //   let count = 0;
@@ -121,6 +137,16 @@ export default class World {
   //   this.spatter(bg_context, location);
   // }
 
+  drawDebug(context: CanvasRenderingContext2D): void {
+    // Draw number to the screen
+    context.fillStyle = '#dddddd';
+    context.fillRect(0, 0, 75, 100);
+    context.font = '11px Arial';
+    context.fillStyle = 'black';
+    context.fillText("FPS: " + this.fps, 5, 13);
+    context.fillText("ENT: " + this.entities.size, 5, 25);
+
+  }
 
   render(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
 
@@ -132,14 +158,18 @@ export default class World {
     // }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    // context.drawImage(this.background, 0, 0);
+    //context.drawImage(this.background, 0, 0);
 
-    // for (var id in this.entities.keys()) {
-    //   this.entities.get(id).render(context);
-    // }
+    for (let [key, entity] of this.entities) {
+      entity.render(context)
+    }
+
     // draw target if any
-    //this.drawTarget(context);
+    if (this.draw_target) this.drawTarget(context);
+
     this.player?.render(context);
+
+    if (this.show_debug) this.drawDebug(context);
   }
 
   // outOfRange(location: Vec2.Vector): boolean {
@@ -163,7 +193,14 @@ export default class World {
     }
   }
 
-  process(gameTime: number) : void {
+  process(gameTime: number, timestamp: DOMHighResTimeStamp) : void {
+    // Calculate the number of seconds passed since the last frame
+    this.timeToDraw = gameTime / 1000;
+
+    // Calculate fps
+    this.fps = Math.round(1 / this.timeToDraw);
+
+    console.log('World entities: ', this.entities.size);
     this.removeEntities();
     for (let [key, entity] of this.entities) {
       entity.process(gameTime)
