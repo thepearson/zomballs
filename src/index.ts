@@ -1,45 +1,37 @@
 import "./scss/styles.scss";
-
 import Game from './game';
 
-// Create game.
-const game = new Game();
-
-type GameInit = {
-  canvas: HTMLCanvasElement, 
-  context: CanvasRenderingContext2D
-}
-
-
-function init(target: string): GameInit | null {
-  const canvas = document.querySelector<HTMLCanvasElement>(target);
-  if (canvas == null) return null; // TODO: Create canvas if not exists
-  
-  const context = canvas.getContext('2d');
-
-  return { 
-    canvas: canvas as HTMLCanvasElement, 
-    context: context as CanvasRenderingContext2D
-  };
-}
-
+/**
+ * Query selector string 
+ * for the canvas target
+ */
+const target = '#game-board';
 
 (() => {
-  const gameTarget = init('#game-board');
-  if (gameTarget !== null) {
-    game.setTarget(gameTarget.canvas, gameTarget.context);
-  }
-  
-  window.requestAnimationFrame(gameLoop)
-  
+  const canvas = document.querySelector<HTMLCanvasElement>(target);
 
-  // Define gameloop and process.
-  function gameLoop(timestamp: DOMHighResTimeStamp) {
-    game.draw(timestamp);
+  if (canvas instanceof HTMLCanvasElement) {
+    const context = canvas.getContext('2d');
+    if (context == null) return; 
+
+    // Create game.
+    const game = new Game(canvas, context);
   
-    // Keep requesting new frames
-    window.requestAnimationFrame(gameLoop);
-  }  
+    // Define gameloop and process.
+    const gameLoop = (timestamp: DOMHighResTimeStamp): void => {
+      
+      game.process(timestamp);
+    
+      // Keep requesting new frames
+      window.requestAnimationFrame(gameLoop);
+    }  
+    
+    game.setUp();
+    window.requestAnimationFrame(gameLoop)
+  }
+
+
+
 })()
 
 

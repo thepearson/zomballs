@@ -75,9 +75,9 @@ export default class Color {
   }
 
   getHex(): string {
-    const r = this.r.toString(16);
-    const g = this.g.toString(16);
-    const b = this.b.toString(16);
+    let r = this.r.toString(16);
+    let g = this.g.toString(16);
+    let b = this.b.toString(16);
   
     if (r.length == 1)
       r = "0" + r;

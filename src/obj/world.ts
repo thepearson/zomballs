@@ -49,14 +49,14 @@ export default class World {
     this.target = null;
   }
 
-  setTargetPosition(mouse_pos: Vec2.Vector) {
-    if (Constants.GAME_FLIP_SIGHTS == true) {
-      this.target = mouse_pos.subtract(this.player?.location)
-      //this.target = (((mouse_pos-this.player.location)*1.5)*-1.0)+this.player.location;
-    } else {
-      this.target = mouse_pos;
-    }
-  }
+  // setTargetPosition(mouse_pos: Vec2.Vector) {
+  //   if (Constants.GAME_FLIP_SIGHTS == true) {
+  //     this.target = mouse_pos.subtract(this.player?.location)
+  //     //this.target = (((mouse_pos-this.player.location)*1.5)*-1.0)+this.player.location;
+  //   } else {
+  //     this.target = mouse_pos;
+  //   }
+  // }
 
   fireBullet(): void {
     // Bullet bullet = new Bullet(this.player.location, this.target);
@@ -65,30 +65,30 @@ export default class World {
     // this.target = null;
   }
 
-  drawTarget(context: CanvasRenderingContext2D) {
-    if (this.target != null) {
-      context.beginPath();
-      context.lineWidth = 1;
-      context.strokeStyle = this.target_color?.getHex();
-      context.moveTo(this.player?.location?.x, this.player?.location?.y);
-      context.lineTo(this.target.x, this.target.y);
-      context.stroke();
-    }
-  }
+  // drawTarget(context: CanvasRenderingContext2D) {
+  //   if (this.target != null) {
+  //     context.beginPath();
+  //     context.lineWidth = 1;
+  //     context.strokeStyle = this.target_color?.getHex();
+  //     context.moveTo(this.player?.location?.x, this.player?.location?.y);
+  //     context.lineTo(this.target.x, this.target.y);
+  //     context.stroke();
+  //   }
+  // }
 
-  countEntities(type: string): number {
-    let count = 0;
-    for (var id in this.entities.keys()) {
-      if (?type) {
-        if (this.entities.get(id).name == type && this.entities.get(id).remove == false) {
-          count++;
-        }
-      } else {
-        count++;
-      }
-    }
-    return count;
-  }
+  // countEntities(type: string): number {
+  //   let count = 0;
+  //   for (var id in this.entities.keys()) {
+  //     if (?type) {
+  //       if (this.entities.get(id).name == type && this.entities.get(id).remove == false) {
+  //         count++;
+  //       }
+  //     } else {
+  //       count++;
+  //     }
+  //   }
+  //   return count;
+  // }
 
   removeEntity(id: number) {
     this.entities.delete(id);
@@ -116,104 +116,101 @@ export default class World {
   }
 
 
-  drawSpatter(location: Vec2.Vector): void {
-    const bg_context: CanvasRenderingContext2D = this.background.getContext("2d");
-    this.spatter(bg_context, location);
-  }
+  // drawSpatter(location: Vec2.Vector): void {
+  //   const bg_context: CanvasRenderingContext2D = this.background.getContext("2d");
+  //   this.spatter(bg_context, location);
+  // }
 
 
-  render(canvas: HTMLCanvasElement) {
-    const context: CanvasRenderingContext2D  = canvas.getContext("2d");
+  render(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
 
     // build background
-    if (this.background == null) {
-      this.background = new Element.html('<canvas/>');
-      this.background.width = canvas.width;
-      this.background.height = canvas.height;
-    }
+    // if (this.background == null) {
+    //   this.background = new Element.html('<canvas/>');
+    //   this.background.width = canvas.width;
+    //   this.background.height = canvas.height;
+    // }
+
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(this.background, 0, 0);
+    // context.drawImage(this.background, 0, 0);
 
-    for (var id in this.entities.keys()) {
-      this.entities.get(id).render(context);
-    }
+    // for (var id in this.entities.keys()) {
+    //   this.entities.get(id).render(context);
+    // }
     // draw target if any
-    this.drawTarget(context);
-    this.player.render(context);
+    //this.drawTarget(context);
+    this.player?.render(context);
   }
 
-  outOfRange(location: Vec2.Vector): boolean {
-    let x = location.x;
-    let y = location.y;
-    if (x < (0-zomball_spawn_offset) || x > (game_size[0]+zomball_spawn_offset)) {
-      return true;
-    }
-    if (y < (0-zomball_spawn_offset) || y > (game_size[1]+zomball_spawn_offset)) {
-      return true;
-    }
-    return false;
-  }
+  // outOfRange(location: Vec2.Vector): boolean {
+  //   let x = location.x;
+  //   let y = location.y;
+  //   if (x < (0-zomball_spawn_offset) || x > (game_size[0]+zomball_spawn_offset)) {
+  //     return true;
+  //   }
+  //   if (y < (0-zomball_spawn_offset) || y > (game_size[1]+zomball_spawn_offset)) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-  void remove_entities() {
-    List<num> ids = [];
-    for (num id in this.entities.keys) {
-      if (this.entities[id].remove == true) {
-        ids.add(id);
+  removeEntities(): void {
+    const ids: number[] = [];
+    for (let [key, entity] of this.entities) {
+      if (entity.remove) {
+        this.entities.delete(key);
       }
     }
-    for (num id in ids) {
-      this.entities.remove(id);
-    }
   }
 
-  void process(double gameTime) {
-    this.remove_entities();
-    for (num id in this.entities.keys) {
-      this.entities[id].process(gameTime);
+  process(gameTime: number) : void {
+    this.removeEntities();
+    for (let [key, entity] of this.entities) {
+      entity.process(gameTime)
     }
-    this.player.process(gameTime);
+    this.player?.process(gameTime);
   }
 
-  bool within_range(Vector2 vector1, Vector2 vector2, num range) {
-    Vector2 distance_vector = vector1-vector2;
-    if (distance_vector.length <= range) {
+  withinRange(vector1: Vec2.Vector, vector2: Vec2.Vector, range: number) : boolean {
+    const distance_vector: number = vector1.distance(vector2);
+    if (distance_vector <= range) {
       return true;
     }
     return false;
   }
 
-  List get_entities_in_range(Entity entity, num range, [String type]) {
-    List entities = [];
-    for (num id in this.entities.keys) {
-      if (entity.id != id) {
-        if (this.within_range(entity.location, this.entities[id].location, range)) {
-          if (?type) {
-            if (this.entities[id].name == type) {
-              entities.add(id);
-            }
-          } else {
-            entities.add(id);
-          }
-        }
-      }
-    }
-    return entities;
-  }
+  // List get_entities_in_range(Entity entity, num range, [String type]) {
+  //   List entities = [];
+  //   for (num id in this.entities.keys) {
+  //     if (entity.id != id) {
+  //       if (this.within_range(entity.location, this.entities[id].location, range)) {
+  //         if (?type) {
+  //           if (this.entities[id].name == type) {
+  //             entities.add(id);
+  //           }
+  //         } else {
+  //           entities.add(id);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return entities;
+  // }
 
-  Entity get_close_entity(Entity entity, num range, [String type]) {
-    for (num id in this.entities.keys) {
-      if (entity.id != id) {
-        if (this.within_range(entity.location, this.entities[id].location, range)) {
-          if (?type) {
-            if (this.entities[id].name == type) {
-              return this.entities[id];
-            }
-          } else {
-            return this.entities[id];
-          }
-        }
-      }
-    }
-    return null;
-  }
+  // Entity get_close_entity(Entity entity, num range, [String type]) {
+  //   for (num id in this.entities.keys) {
+  //     if (entity.id != id) {
+  //       if (this.within_range(entity.location, this.entities[id].location, range)) {
+  //         if (?type) {
+  //           if (this.entities[id].name == type) {
+  //             return this.entities[id];
+  //           }
+  //         } else {
+  //           return this.entities[id];
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
 }
