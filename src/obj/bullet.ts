@@ -15,8 +15,7 @@ export default class Bullet extends Entity {
     this.destination = new Vec2.Vector(destination.x, destination.y);
     this.size = 1;
     this.damage_value = Constants.BULLET_DAMAGE_VALUE;
-    //this.color = new Color(1, 1, );
-    this.speed = 2;
+    this.speed = 1;
   }
 
   /**

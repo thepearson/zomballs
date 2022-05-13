@@ -34,6 +34,8 @@ export default class Game {
         this.world?.setTargetPosition(mouse_pos);
       })
       this.mouse_down = this.canvas.addEventListener("mousedown", (event: MouseEvent) => {
+        const mouse_pos = new Vec2.Vector(event.clientX, event.clientY);
+        this.world?.setTargetPosition(mouse_pos);
         this.world?.fireBullet();
       })
     }

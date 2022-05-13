@@ -119,7 +119,7 @@ export default class World {
     const y_max = Math.round(location.y+(Constants.ZOMBALL_BLOOD_SPLATTER_SIZE/2));
     const y_min = Math.round(location.y-(Constants.ZOMBALL_BLOOD_SPLATTER_SIZE/2));
 
-    var rand = Math.random();
+    //var rand = Math.random();
     while (loop < Constants.ZOMBALL_BLOOD_SPLATTER_SIZE) {
       // Vector2 location = new Vector2((rand.nextInt(x_max-x_min)+x_min).toDouble(), (rand.nextInt(y_max-y_min)+y_min).toDouble());
       // num size = rand.nextInt(zomball_blood_splater_cicrle_max-zomball_blood_splater_cicrle_min)+zomball_blood_splater_cicrle_min;
