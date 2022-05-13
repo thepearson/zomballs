@@ -1,7 +1,12 @@
 export default abstract class State {
   name: string = '';
-  abstract do_actions(): void;
-  abstract check_conditions(): string | null;
-  abstract entry_actions(): void;
-  abstract exit_actions(): void;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+  
+  abstract doActions(): void;
+  abstract checkConditions(): string | null;
+  abstract entryActions(): void;
+  abstract exitActions(): void;
 }

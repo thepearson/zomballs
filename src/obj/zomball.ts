@@ -71,8 +71,8 @@ export default class Zomball extends Entity {
       var health_bar_empty_color = 'red';
       var health_bar_full_color = 'green';
 
-      var line_x = (this.location.x-(this.size/2)).round();
-      var line_y = (this.location.y-((this.size/2)+health_bar_width)).round();
+      var line_x = Math.round(this.location.x - (this.size / 2));
+      var line_y = Math.round(this.location.y - ((this.size / 2) + health_bar_width));
 
       // if player health is less than default health
       if (this.health < Constants.ZOMBALL_DEFAULT_HEALTH) {
@@ -83,7 +83,7 @@ export default class Zomball extends Entity {
         context.lineTo(line_x+health_bar_length, line_y);
         context.stroke();
 
-        health_bar_length = ((this.health/100)*health_bar_length).round();
+        health_bar_length = Math.round((this.health/100)*health_bar_length);
       }
 
 
@@ -112,7 +112,7 @@ export default class Zomball extends Entity {
 
     // if we are moving towards the destination
     if (this.speed > 0 && this.location != this.destination) {
-      const destinationClone = this.destination.clone();
+      const destinationClone = new Vec2.Vector(this.destination.x, this.destination.y);
       const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
 
       const distance_to_destination = vec_to_destination.length();
@@ -122,7 +122,7 @@ export default class Zomball extends Entity {
 
       // new location is the current location
       // plus the distance traveled vector
-      this.location = this.location + travel_vector;
+      this.location = this.location.add(travel_vector);
     }
   }
 
@@ -165,6 +165,6 @@ export default class Zomball extends Entity {
         y = Random.int(0, Constants.GAME_SIZE.height);
         break;
     }
-    this.location = new Vec2.Vector(x.toDouble(), y.toDouble());
+    this.location = new Vec2.Vector(x, y);
   }
 }

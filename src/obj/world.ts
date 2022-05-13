@@ -92,19 +92,18 @@ export default class World {
     }
   }
 
-  // countEntities(type: string): number {
-  //   let count = 0;
-  //   for (var id in this.entities.keys()) {
-  //     if (?type) {
-  //       if (this.entities.get(id).name == type && this.entities.get(id).remove == false) {
-  //         count++;
-  //       }
-  //     } else {
-  //       count++;
-  //     }
-  //   }
-  //   return count;
-  // }
+  countEntities(type?: string): number {
+    let count = 0;
+
+    if (!type) return this.entities.size;
+
+    for (let [key, entity] of this.entities) {
+      if (entity.name == type && entity.remove == false) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   removeEntity(id: number) {
     this.entities.delete(id);
@@ -132,10 +131,10 @@ export default class World {
   }
 
 
-  // drawSpatter(location: Vec2.Vector): void {
-  //   const bg_context: CanvasRenderingContext2D = this.background.getContext("2d");
-  //   this.spatter(bg_context, location);
-  // }
+  drawSpatter(location: Vec2.Vector): void {
+    //const bg_context: CanvasRenderingContext2D = this.background.getContext("2d");
+    //this.spatter(bg_context, location);
+  }
 
   drawDebug(context: CanvasRenderingContext2D): void {
     // Draw number to the screen
