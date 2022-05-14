@@ -2,7 +2,9 @@ import Entity from "./entity";
 import Player from "./player";
 import Bullet from "./bullet";
 import * as Vec2 from 'vector2d'; 
+import Random from "../util/random";
 import Color from "../util/color";
+import drawCircle from "../util/circle";
 import { Constants } from "../constants";
 
 export default class World {
@@ -120,20 +122,23 @@ export default class World {
 
     //var rand = Math.random();
     while (loop < Constants.ZOMBALL_BLOOD_SPLATTER_SIZE) {
-      // Vector2 location = new Vector2((rand.nextInt(x_max-x_min)+x_min).toDouble(), (rand.nextInt(y_max-y_min)+y_min).toDouble());
-      // num size = rand.nextInt(zomball_blood_splater_cicrle_max-zomball_blood_splater_cicrle_min)+zomball_blood_splater_cicrle_min;
-      // num one = rand.nextInt(55);
-      // num two = rand.nextInt(128);
-      // Color color = new Color(one+200, 0, 0);
-      // draw_circle(context, location, color, size);
-      // loop += 1;
+      const location = new Vec2.Vector(Random.int(0, (x_max - x_min)) + x_min, Random.int(0, (y_max - y_min)) + y_min);
+      const size = Random.int(0, (Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MAX - Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN) + Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN);
+      const one = Random.int(0, 55);
+      const two = Random.int(0, 128);
+      const color: Color = new Color(one + 200, 0, 0);
+
+      drawCircle(context, location, color, size);
+      loop += 1;
     }
   }
 
 
   drawSpatter(location: Vec2.Vector): void {
-    //const bg_context: CanvasRenderingContext2D = this.background.getContext("2d");
-    //this.spatter(bg_context, location);
+    if (this.background) {
+      const bg_context: CanvasRenderingContext2D | null = this.background.getContext("2d");
+      if (bg_context) this.spatter(bg_context, location);
+    }
   }
 
   drawDebug(context: CanvasRenderingContext2D): void {
@@ -150,14 +155,14 @@ export default class World {
   render(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
 
     // build background
-    // if (this.background == null) {
-    //   this.background = new Element.html('<canvas/>');
-    //   this.background.width = canvas.width;
-    //   this.background.height = canvas.height;
-    // }
+    if (this.background == null) {
+      this.background = document.createElement('canvas');
+      this.background.width = canvas.width;
+      this.background.height = canvas.height;
+    }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-    //context.drawImage(this.background, 0, 0);
+    context.drawImage(this.background, 0, 0);
 
     for (let [key, entity] of this.entities) {
       entity.render(context)
