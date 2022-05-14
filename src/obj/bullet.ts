@@ -33,23 +33,25 @@ export default class Bullet extends Entity {
     super.process(gameTime);
     if (this.world == null) return;
 
-    // Entity zomball = this.world.get_close_entity(this, zomball_size, 'zomball');
-    // if (zomball != null && zomball.brain.active_state != 'dead') {
-    //   // decrease zomball health
-    //   zomball.health -= this.damage_value;
-    //   this.world.player_score += this.damage_value;
+    const zomball: Entity | null = this.world.getCloseEntity(this, Constants.ZOMBALL_SIZE, 'zomball');
+    if (zomball != null && zomball.brain.active_state != 'zomball-dead') {
+      // decrease zomball health
+      zomball.health -= this.damage_value;
+      this.world.player_score += this.damage_value;
 
-    //   // set for removal
-    //   this.remove = true;
+      // set for removal
+      this.remove = true;
+      console.log(zomball)
 
-    //   // lets set others in range to alert, but only of they aren't charging
-    //   List in_range = this.world.get_entities_in_range(zomball, zomball_alert_range, 'zomball');
-    //   for (var id in in_range) {
-    //     if (this.world.entities[id].brain.active_state != "charging") {
-    //       this.world.entities[id].brain.set_state("alerted");
-    //     }
-    //   }
-    // }
+      // lets set others in range to alert, but only of they aren't charging
+      const in_range: Array<Entity> = this.world.getEntitiesInRange(zomball, Constants.ZOMBALL_ALERT_RANGE, 'zomball');
+
+      for (let entity of in_range) {
+        if (entity.brain.active_state != "zomball-charging") {
+          entity.brain.setState("zomball-alerted");
+        }
+      }
+    }
 
     // remove the bullet when it reaches it's destination.
     if (this.world.withinRange(this.location, this.destination, 10)) {

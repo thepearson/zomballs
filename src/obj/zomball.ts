@@ -5,6 +5,12 @@ import drawCircle from "../util/circle";
 import Random from "../util/random";
 import * as Vec2 from "vector2d";
 
+import ZomballStateCharging from "../state/states/zomball_state_charging";
+import ZomballStateDead from "../state/states/zomball_state_dead";
+import ZomballStateEatingGrass from "../state/states/zomball_state_eating_grass";
+import ZomballStateWalking from "../state/states/zomball_state_walking";
+import ZomballStateAlerted from "../state/states/zomball_state_alerted";
+
 export default class Zomball extends Entity {
   color: Color = new Color(0, 128, 0);
   spatter: boolean = false;
@@ -17,15 +23,17 @@ export default class Zomball extends Entity {
     this.setSpawn();
     this.damage_value = Constants.ZOMBALL_DAMAGE_VALUE;
 
-    //this.brain.add_state(new ZomballStateWalking(this));
-    //this.brain.add_state(new ZomballStateCharging(this));
-    //this.brain.add_state(new ZomballStateEatingGrass(this));
-    //this.brain.add_state(new ZomballStateAlerted(this));
-    //this.brain.add_state(new ZomballStateDead(this));
-    //this.brain.set_state("walking");
+    this.brain.addState(new ZomballStateWalking(this));
+    this.brain.addState(new ZomballStateCharging(this));
+    this.brain.addState(new ZomballStateEatingGrass(this));
+    this.brain.addState(new ZomballStateAlerted(this));
+    this.brain.addState(new ZomballStateDead(this));
+    this.brain.setState("zomball-walking");
     
     this.speed = Constants.ZOMBALL_SPEED_MIN + Random.int(0, Constants.ZOMBALL_SPEED_RANGE);
   }
+
+
 
 
   /**
@@ -37,28 +45,28 @@ export default class Zomball extends Entity {
     // if we are using pre-rendering contexts
     if (Constants.GAME_UTILIZE_PRERENDER == true) {
       // var canvas_offset = 1;
-      // if (this.brain.active_state == 'dead') {
-      //   // if this is the first render, then we need to render
-      //   if (this.world.zomball_dead_prerender == null) {
-      //     this.world.zomball_dead_prerender = new Element.html('<canvas/>');
-      //     this.world.zomball_dead_prerender.width = this.size+canvas_offset;
-      //     this.world.zomball_dead_prerender.height = this.size+canvas_offset;
-      //     draw_circle(this.world.zomball_dead_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), new Color(128, 64, 0), this.size);
-      //   }
+      // if (this.brain.active_state == 'zomball-dead') {
+        // if this is the first render, then we need to render
+        // if (this.world.zomball_dead_prerender == null) {
+        //   this.world.zomball_dead_prerender = new Element.html('<canvas/>');
+        //   this.world.zomball_dead_prerender.width = this.size+canvas_offset;
+        //   this.world.zomball_dead_prerender.height = this.size+canvas_offset;
+        //   draw_circle(this.world.zomball_dead_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), new Color(128, 64, 0), this.size);
+        // }
 
-      //   // render
-      //   context.drawImage(this.world.zomball_dead_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
+        // render
+        //context.drawImage(this.world.zomball_dead_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
       // } else {
-      //   // if this is the first render, then we need to render
-      //   if (this.world.zomball_prerender == null) {
-      //     this.world.zomball_prerender = new Element.html('<canvas/>');
-      //     this.world.zomball_prerender.width = this.size+canvas_offset;
-      //     this.world.zomball_prerender.height = this.size+canvas_offset;
-      //     draw_circle(this.world.zomball_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), this.color, this.size);
-      //   }
+        // if this is the first render, then we need to render
+        // if (this.world.zomball_prerender == null) {
+        //   this.world.zomball_prerender = new Element.html('<canvas/>');
+        //   this.world.zomball_prerender.width = this.size+canvas_offset;
+        //   this.world.zomball_prerender.height = this.size+canvas_offset;
+        //   draw_circle(this.world.zomball_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), this.color, this.size);
+        // }
 
-      //   // render
-      //   context.drawImage(this.world.zomball_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
+        // // render
+        // context.drawImage(this.world.zomball_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
       // }
     } else {
       drawCircle(context, this.location, this.color, this.size);
@@ -110,20 +118,20 @@ export default class Zomball extends Entity {
       this.remove = true;
     }
 
-    // if we are moving towards the destination
-    if (this.speed > 0 && this.location != this.destination) {
-      const destinationClone = new Vec2.Vector(this.destination.x, this.destination.y);
-      const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
+    // // if we are moving towards the destination
+    // if (this.speed > 0 && this.location != this.destination) {
+    //   const destinationClone = new Vec2.Vector(this.destination.x, this.destination.y);
+    //   const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
 
-      const distance_to_destination = vec_to_destination.length();
-      const heading = vec_to_destination.normalize();
-      const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
-      const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
+    //   const distance_to_destination = vec_to_destination.length();
+    //   const heading = vec_to_destination.normalize();
+    //   const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
+    //   const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
 
-      // new location is the current location
-      // plus the distance traveled vector
-      this.location = this.location.add(travel_vector);
-    }
+    //   // new location is the current location
+    //   // plus the distance traveled vector
+    //   this.location = this.location.add(travel_vector);
+    // }
   }
 
   /**
@@ -141,7 +149,6 @@ export default class Zomball extends Entity {
     if (Constants.ZOMBALL_SPAWN_RESTRAINED == true) {
       spawn_direction = Random.int(0, 4);
     }
-
     switch (spawn_direction) {
       case 0: // north
         x = Random.int(0, Constants.GAME_SIZE.width);

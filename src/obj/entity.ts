@@ -1,5 +1,6 @@
 import * as Vec2D from 'vector2d'
 import World from './world';
+import StateMachine from '../state/state_machine';
 
 export default class Entity {
   id: number = 0;
@@ -13,11 +14,11 @@ export default class Entity {
   remove: boolean = false;
 
   world: World | null = null;
-  //StateMachine brain;
+  brain: StateMachine;
 
   constructor(name: string) {
     this.name = name;
-    //this.brain = new StateMachine();
+    this.brain = new StateMachine();
   }
 
   render(context: CanvasRenderingContext2D) {
@@ -25,6 +26,6 @@ export default class Entity {
   }
 
   process(gameTime: number) {
-    //this.brain.think();
+    this.brain.think();
   }
 }

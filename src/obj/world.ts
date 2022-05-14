@@ -199,7 +199,6 @@ export default class World {
     // Calculate fps
     this.fps = Math.round(1 / this.timeToDraw);
 
-    console.log('World entities: ', this.entities.size);
     this.removeEntities();
     for (let [key, entity] of this.entities) {
       entity.process(gameTime)
@@ -233,7 +232,7 @@ export default class World {
     return entities;
   }
 
-  getCloseEntity(queryEntity: Entity, range: Number, type?: string): Entity | null {
+  getCloseEntity(queryEntity: Entity, range: number, type?: string): Entity | null {
     for (let [key, entity] of this.entities) {
       // Exclude the queried entity
       if (queryEntity.id != key) { 

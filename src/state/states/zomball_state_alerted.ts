@@ -2,8 +2,9 @@ import State from "../state";
 import Zomball from "../../obj/zomball";
 import Random from "../../util/random";
 import { Constants } from "../../constants";
+import * as Vec2 from "vector2d";
 
-class ZomballStateAlerted extends State {
+export default class ZomballStateAlerted extends State {
 
   zomball: Zomball;
 
@@ -17,7 +18,7 @@ class ZomballStateAlerted extends State {
     this.zomball.speed = 0;
 
     // set destination as the player
-    this.zomball.destination = this.zomball.world?.player?.location!;
+    this.zomball.destination = new Vec2.Vector(this.zomball.world?.player?.location.x!, this.zomball.world?.player?.location.y!);
   }
 
   checkConditions(): string | null {

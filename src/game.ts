@@ -2,6 +2,7 @@ import Player from "./obj/player";
 import { Constants } from "./constants";
 import World from "./obj/world";
 import * as Vec2 from "vector2d";
+import Zomball from "./obj/zomball";
 
 export default class Game {
   
@@ -14,6 +15,8 @@ export default class Game {
   oldTimestamp: DOMHighResTimeStamp = 0.0;
   world: World | undefined;
   fps: number = 0;
+
+  last_run_add: DOMHighResTimeStamp = 0;
 
   constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     this.canvas = canvas;
@@ -41,10 +44,32 @@ export default class Game {
     }
   }
 
+  addZomball() {
+    const zom = new Zomball();
+    zom.setSpawn();
+    this.world?.addEntity(zom);
+  }
+
+  processTimers(timestamp: DOMHighResTimeStamp) {
+    const azz_zom_time = 2000;
+    // Add zomball
+    if (timestamp - this.last_run_add > azz_zom_time) {
+      this.addZomball();
+      this.last_run_add = timestamp;
+    }
+
+    // Make harder
+
+  }
+
   process(timestamp: DOMHighResTimeStamp): void {
+    
+    // Process any timers
+    this.processTimers(timestamp);
 
     // Calculate the number of seconds passed since the last frame
     const dt : number = timestamp - this.oldTimestamp;
+
     //this.secondsPassed = dt / 1000;
     this.oldTimestamp = timestamp;
 
