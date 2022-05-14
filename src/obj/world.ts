@@ -171,17 +171,17 @@ export default class World {
     if (this.show_debug) this.drawDebug(context);
   }
 
-  // outOfRange(location: Vec2.Vector): boolean {
-  //   let x = location.x;
-  //   let y = location.y;
-  //   if (x < (0-zomball_spawn_offset) || x > (game_size[0]+zomball_spawn_offset)) {
-  //     return true;
-  //   }
-  //   if (y < (0-zomball_spawn_offset) || y > (game_size[1]+zomball_spawn_offset)) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  outOfRange(location: Vec2.Vector): boolean {
+    let x = location.x;
+    let y = location.y;
+    if (x < (0 - Constants.ZOMBALL_SPAWN_OFFSET) || x > (Constants.GAME_SIZE.width + Constants.ZOMBALL_SPAWN_OFFSET)) {
+      return true;
+    }
+    if (y < (0 - Constants.ZOMBALL_SPAWN_OFFSET) || y > (Constants.GAME_SIZE.height + Constants.ZOMBALL_SPAWN_OFFSET)) {
+      return true;
+    }
+    return false;
+  }
 
   removeEntities(): void {
     const ids: number[] = [];
@@ -215,38 +215,39 @@ export default class World {
     return false;
   }
 
-  // List get_entities_in_range(Entity entity, num range, [String type]) {
-  //   List entities = [];
-  //   for (num id in this.entities.keys) {
-  //     if (entity.id != id) {
-  //       if (this.within_range(entity.location, this.entities[id].location, range)) {
-  //         if (?type) {
-  //           if (this.entities[id].name == type) {
-  //             entities.add(id);
-  //           }
-  //         } else {
-  //           entities.add(id);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return entities;
-  // }
+  getEntitiesInRange(queryEntity: Entity, range: number, type?: string): Entity[] {
+    const entities: Entity[] = [];
+    for (let [key, entity] of this.entities) {
+      if (queryEntity.id != key) { 
+        if (this.withinRange(queryEntity.location, entity.location, range)) {
+          if (type) {
+            if (entity.name == type) {
+              entities.push(entity);
+            }
+          } else {
+            entities.push(entity)
+          }
+        }
+      }
+    }
+    return entities;
+  }
 
-  // Entity get_close_entity(Entity entity, num range, [String type]) {
-  //   for (num id in this.entities.keys) {
-  //     if (entity.id != id) {
-  //       if (this.within_range(entity.location, this.entities[id].location, range)) {
-  //         if (?type) {
-  //           if (this.entities[id].name == type) {
-  //             return this.entities[id];
-  //           }
-  //         } else {
-  //           return this.entities[id];
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
+  getCloseEntity(queryEntity: Entity, range: Number, type?: string): Entity | null {
+    for (let [key, entity] of this.entities) {
+      // Exclude the queried entity
+      if (queryEntity.id != key) { 
+        if (this.withinRange(queryEntity.location, entity.location, range)) {
+          if (type) {
+            if (entity.name == type) {
+              return entity;
+            }
+          } else {
+            return entity;
+          }
+        }
+      }
+    }
+    return null;
+  }
 }
