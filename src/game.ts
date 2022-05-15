@@ -51,7 +51,7 @@ export default class Game {
   }
 
   processTimers(timestamp: DOMHighResTimeStamp) {
-    const add_zom_time = 1000;
+    const add_zom_time = Constants.ZOMBALL_SPAWN_NEW_ZOMBALL_DELAY;
     // Add zomball
     if (timestamp - this.last_run_add > add_zom_time) {
       this.addZomball();
@@ -79,7 +79,6 @@ export default class Game {
     if (this.context == null) return;
 
     // Calculate fps
-    //this.fps = Math.round(1 / this.secondsPassed);
     this.world?.render(this.canvas, this.context);
   }
 }

@@ -20,14 +20,8 @@ export default class ZomballStateDead extends State {
     this.zomball.speed = 0;
     this.entry_time = Date.now();
     this.zomball.color = this.dead_color;
-
-    // set destination as the player
-    const player = this.zomball.world?.player;
-    if (player) {
-      this.zomball.destination = new Vec2.Vector(player.location.x, player.location.y);
-    }
+    this.zomball.world!.player_score += Math.round(((Date.now() - this.zomball.spawn_time) / Constants.ZOMBALL_SCORE_FACTOR) + Constants.ZOMBALL_BASE_VALUE);
     
-
     // spatter
     if (this.zomball.spatter == false) {
       this.zomball.world?.drawSpatter(this.zomball.location);

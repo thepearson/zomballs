@@ -4,6 +4,7 @@ import StateMachine from '../state/state_machine';
 
 export default class Entity {
   id: number = 0;
+  spawn_time: number = 0;
   size: number = 0;
   speed: number = 0;
   damage_value: number = 0;
@@ -18,6 +19,7 @@ export default class Entity {
 
   constructor(name: string) {
     this.name = name;
+    this.spawn_time = Date.now();
     this.brain = new StateMachine();
   }
 

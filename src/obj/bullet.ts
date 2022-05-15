@@ -35,13 +35,16 @@ export default class Bullet extends Entity {
 
     const zomball: Entity | null = this.world.getCloseEntity(this, Constants.ZOMBALL_SIZE, 'zomball');
     if (zomball != null && zomball.brain.active_state != 'zomball-dead') {
-      // decrease zomball health
+      // Decrease zomball health
       zomball.health -= this.damage_value;
-      this.world.player_score += this.damage_value;
+
+      // Make zomball charge after being shot.
+      if (zomball.health > 0) {
+        zomball.brain.setState("zomball-charging");
+      }
 
       // set for removal
       this.remove = true;
-      console.log(zomball)
 
       // lets set others in range to alert, but only of they aren't charging
       const in_range: Array<Entity> = this.world.getEntitiesInRange(zomball, Constants.ZOMBALL_ALERT_RANGE, 'zomball');

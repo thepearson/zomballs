@@ -158,7 +158,7 @@ export default class Zomball extends Entity {
     // of the center
     let spawn_direction: number = 4;
     if (Constants.ZOMBALL_SPAWN_RESTRAINED == true) {
-      spawn_direction = Random.int(0, 4);
+      spawn_direction = Random.int(0, 3);
     }
     switch (spawn_direction) {
       case 0: // north

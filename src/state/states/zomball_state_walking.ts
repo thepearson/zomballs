@@ -22,21 +22,14 @@ export default class ZomballStateWalking extends State {
         Random.int(0, Constants.GAME_SIZE.width),
         Random.int(0, Constants.GAME_SIZE.height)
       );
-    } // else {
-    //   // destination is set so lets choose one close
-    //   // to where the current one is. so we dont get crazy jerky
-    //   // movements
+    } else {
+      // destination is set so lets choose one close
+      // to where the current one is. so we dont get crazy jerky
+      // movements
 
-    //   // if zomball has reached their destination then chose a completely
-    //   // new one, but only after
-    //   if (this.zomball.destination == this.zomball.location) {
-    //     if (Random.int(Constants.ZOMBALL_DEST_REACH_MOVE_POSSIBILITY) == 0) {
-    //       this.zomball.destination = new Vec2.Vector(
-    //         Random.int(0, Constants.GAME_SIZE.width),
-    //         Random.int(0, Constants.GAME_SIZE.height)
-    //       );
-    //     }
-    //   }
+      // if zomball has reached their destination then chose a completely
+      // new one, but only after
+
     //   else {
     //     // set some defaults for the new locations
     //     let new_x: number = 0;
@@ -65,7 +58,7 @@ export default class ZomballStateWalking extends State {
     //     // set the new destination
     //     this.zomball.destination = new Vec2.Vector(new_x, new_y);
     //   }
-    // }
+    }
   }
 
   doActions(): void {
@@ -80,6 +73,15 @@ export default class ZomballStateWalking extends State {
       this.zomball.destination = this.zomball.destination!.reverse();
     }
 
+    if (this.zomball.location.equals(this.zomball.destination!)) {
+      if (Random.int(0, Constants.ZOMBALL_DEST_REACH_MOVE_POSSIBILITY) == 0) {        
+        this.zomball.destination = new Vec2.Vector(
+          Random.int(0, Constants.GAME_SIZE.width),
+          Random.int(0, Constants.GAME_SIZE.height)
+        );
+      }
+    }
+
     // only update the direction of the zomball one in every
     // zomball_walking_change_offset ticks, but randomly
     if (Random.int(0, Constants.ZOMBALL_WALKING_CHANGE_OFFSET) == 0) {
@@ -92,7 +94,7 @@ export default class ZomballStateWalking extends State {
       return "zomball-dead";
     }
 
-    if (this.zomball.world?.withinRange(this.zomball.location, this.zomball.world?.player?.location!, Constants.ZOMBALL_SPAWN_OFFSET)) {
+    if (this.zomball.world?.withinRange(this.zomball.location, this.zomball.world?.player?.location!, Constants.ZOMBALL_ALERT_RANGE)) {
       if (Random.int(0, Constants.ZOMBALL_CHARGE_POSSIBILITY) == 0) {
         return "zomball-charging";
       }

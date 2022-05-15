@@ -28,7 +28,7 @@ export default class World {
   fps: number = 0;
 
   show_debug: boolean = true;
-  ;
+
   //Bullet bullet;
   target_color: Color = new Color(255, 128, 128);
 
@@ -143,13 +143,46 @@ export default class World {
 
   drawDebug(context: CanvasRenderingContext2D): void {
     // Draw number to the screen
-    context.fillStyle = '#dddddd';
-    context.fillRect(0, 0, 75, 100);
+    context.fillStyle = '#dddddd55';
+    context.fillRect(Constants.GAME_SIZE.width - 75, Constants.GAME_SIZE.height - 100, 75, 100);
     context.font = '11px Arial';
     context.fillStyle = 'black';
-    context.fillText("FPS: " + this.fps, 5, 13);
-    context.fillText("ENT: " + this.entities.size, 5, 25);
+    context.fillText("FPS: " + this.fps, Constants.GAME_SIZE.width - 70, Constants.GAME_SIZE.height - 85);
+    context.fillText("ENT: " + this.entities.size, Constants.GAME_SIZE.width - 70, Constants.GAME_SIZE.height - 70);
 
+  }
+
+  drawGui(context: CanvasRenderingContext2D) {
+    var health_bar_length = Constants.GAME_SIZE.width - 30;
+    var health_bar_width = 30;
+    var health_bar_empty_color = "#ff5555bb";
+    var health_bar_full_color = "#55FF55bb";
+
+    var line_x = 15; //Math.round( - (this.size / 2));
+    var line_y = 30; //Math.round(this.location.y - ((this.size / 2) + (health_bar_width * 2)));
+
+    // if player health is less than default health
+    context.beginPath();
+    context.lineWidth = health_bar_width;
+    context.strokeStyle = health_bar_empty_color;
+    context.moveTo(line_x, line_y);
+    context.lineTo(line_x + health_bar_length, line_y);
+    context.stroke();
+
+    health_bar_length = Math.round((this.player!.health/100) * health_bar_length);
+
+    if (this.player!.health > 0) {
+      context.beginPath();
+      context.lineWidth = health_bar_width;
+      context.strokeStyle = health_bar_full_color;
+      context.moveTo(line_x, line_y);
+      context.lineTo(line_x+health_bar_length, line_y);
+      context.stroke();
+    }
+
+    context.font = '15px Arial';
+    context.fillStyle = 'black';
+    context.fillText(`Score: ${this.player_score}`, 20, 35);
   }
 
   render(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
@@ -174,6 +207,8 @@ export default class World {
     this.player?.render(context);
 
     if (this.show_debug) this.drawDebug(context);
+
+    this.drawGui(context);
   }
 
   outOfRange(location: Vec2.Vector): boolean {

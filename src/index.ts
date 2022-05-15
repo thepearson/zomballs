@@ -7,6 +7,7 @@ import Game from './game';
  */
 const target = '#game-board';
 
+
 (() => {
   const canvas = document.querySelector<HTMLCanvasElement>(target);
 
