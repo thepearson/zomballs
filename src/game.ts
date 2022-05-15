@@ -51,7 +51,7 @@ export default class Game {
   }
 
   processTimers(timestamp: DOMHighResTimeStamp) {
-    const add_zom_time = 5000;
+    const add_zom_time = 1000;
     // Add zomball
     if (timestamp - this.last_run_add > add_zom_time) {
       this.addZomball();

@@ -82,7 +82,9 @@ export default class Zomball extends Entity {
       let health_bar_full_color = 'green';
 
       let line_x = Math.round(this.location.x - (this.size / 2));
-      let  line_y = Math.round(this.location.y - ((this.size / 2) + health_bar_width));
+      let  line_y = Math.round(this.location.y - ((this.size / 2) + (health_bar_width*2)));
+
+      const percentage = Math.round((100 / Constants.ZOMBALL_DEFAULT_HEALTH) * this.health);
 
       // if player health is less than default health
       if (this.health < Constants.ZOMBALL_DEFAULT_HEALTH) {
@@ -94,13 +96,13 @@ export default class Zomball extends Entity {
         context.stroke();
 
         // TODO: Work out this
-        health_bar_length = Math.round((100/this.health)*health_bar_length);
+        const new_health_bar_length = ((health_bar_length / 100) * percentage);
 
         context.beginPath();
         context.lineWidth = health_bar_width;
         context.strokeStyle = health_bar_full_color;
         context.moveTo(line_x, line_y);
-        context.lineTo(line_x + health_bar_length, line_y);
+        context.lineTo(line_x + new_health_bar_length, line_y);
         context.stroke();
       } else {
         context.beginPath();

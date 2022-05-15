@@ -66,8 +66,6 @@ export default class ZomballStateWalking extends State {
     //     this.zomball.destination = new Vec2.Vector(new_x, new_y);
     //   }
     // }
-
-    console.log(this.zomball);
   }
 
   doActions(): void {
@@ -78,6 +76,7 @@ export default class ZomballStateWalking extends State {
     }
 
     if (this.zomball.world?.getCloseEntity(this.zomball, this.zomball.size, 'zomball') != null) {
+      console.log("bumped")
       // reverse the destination
       this.zomball.destination = this.zomball.location.reverse();
       //this.zomball.destination = ((this.zomball.destination - this.zomball.location) * -1) + this.zomball.location;
