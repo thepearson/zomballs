@@ -54,14 +54,14 @@ export default class Bullet extends Entity {
     }
 
     // remove the bullet when it reaches it's destination.
-    if (this.world.withinRange(this.location, this.destination, 10)) {
+    if (this.world.withinRange(this.location, this.destination!, 10)) {
       this.remove = true;
     }
 
     // if we are moving towards the destination
-    if (this.speed > 0 && !this.location.equals(this.destination)) {
-      const distance_to_destination: number = this.destination.distance(this.location);
-      const destCopy = new Vec2.Vector(this.destination.x, this.destination.y);
+    if (this.speed > 0 && !this.location.equals(this.destination!)) {
+      const distance_to_destination: number = this.destination!.distance(this.location);
+      const destCopy = new Vec2.Vector(this.destination!.x, this.destination!.y);
       const heading: Vec2.Vector = destCopy.subtract(this.location).normalize();
       const distance_traveled = Math.min(distance_to_destination, gameTime * this.speed);
       const travel_vector = heading.mulS(distance_traveled);

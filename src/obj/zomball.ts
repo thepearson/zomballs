@@ -44,43 +44,45 @@ export default class Zomball extends Entity {
 
     // if we are using pre-rendering contexts
     if (Constants.GAME_UTILIZE_PRERENDER == true) {
+      // TODO: Re-implement pre-prerendering for dead zomballs
+      // if (this.dead) {
       // var canvas_offset = 1;
       // if (this.brain.active_state == 'zomball-dead') {
-        // if this is the first render, then we need to render
-        // if (this.world.zomball_dead_prerender == null) {
-        //   this.world.zomball_dead_prerender = new Element.html('<canvas/>');
-        //   this.world.zomball_dead_prerender.width = this.size+canvas_offset;
-        //   this.world.zomball_dead_prerender.height = this.size+canvas_offset;
-        //   draw_circle(this.world.zomball_dead_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), new Color(128, 64, 0), this.size);
-        // }
+      //   // if this is the first render, then we need to render
+      //   if (this.world.zomball_dead_prerender == null) {
+      //     this.world.zomball_dead_prerender = new Element.html('<canvas/>');
+      //     this.world.zomball_dead_prerender.width = this.size+canvas_offset;
+      //     this.world.zomball_dead_prerender.height = this.size+canvas_offset;
+      //     draw_circle(this.world.zomball_dead_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), new Color(128, 64, 0), this.size);
+      //   }
 
-        // render
-        //context.drawImage(this.world.zomball_dead_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
+      //   // render
+      //   context.drawImage(this.world.zomball_dead_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
       // } else {
-        // if this is the first render, then we need to render
-        // if (this.world.zomball_prerender == null) {
-        //   this.world.zomball_prerender = new Element.html('<canvas/>');
-        //   this.world.zomball_prerender.width = this.size+canvas_offset;
-        //   this.world.zomball_prerender.height = this.size+canvas_offset;
-        //   draw_circle(this.world.zomball_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), this.color, this.size);
-        // }
+      //   // if this is the first render, then we need to render
+      //   if (this.world.zomball_prerender == null) {
+      //     this.world.zomball_prerender = new Element.html('<canvas/>');
+      //     this.world.zomball_prerender.width = this.size+canvas_offset;
+      //     this.world.zomball_prerender.height = this.size+canvas_offset;
+      //     draw_circle(this.world.zomball_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), this.color, this.size);
+      //   }
 
-        // // render
-        // context.drawImage(this.world.zomball_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
+      //   // render
+      //   context.drawImage(this.world.zomball_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
       // }
     } else {
       drawCircle(context, this.location, this.color, this.size);
     }
 
-    if (this.health > 10000) {
+    
+    if (this.health > 0) {
+      let health_bar_length = 20;
+      let health_bar_width = 3;
+      let health_bar_empty_color = 'red';
+      let health_bar_full_color = 'green';
 
-      var health_bar_length = 20;
-      var health_bar_width = 3;
-      var health_bar_empty_color = 'red';
-      var health_bar_full_color = 'green';
-
-      var line_x = Math.round(this.location.x - (this.size / 2));
-      var line_y = Math.round(this.location.y - ((this.size / 2) + health_bar_width));
+      let line_x = Math.round(this.location.x - (this.size / 2));
+      let  line_y = Math.round(this.location.y - ((this.size / 2) + health_bar_width));
 
       // if player health is less than default health
       if (this.health < Constants.ZOMBALL_DEFAULT_HEALTH) {
@@ -88,19 +90,27 @@ export default class Zomball extends Entity {
         context.lineWidth = health_bar_width;
         context.strokeStyle = health_bar_empty_color;
         context.moveTo(line_x, line_y);
-        context.lineTo(line_x+health_bar_length, line_y);
+        context.lineTo(line_x + health_bar_length, line_y);
         context.stroke();
 
-        health_bar_length = Math.round((this.health/100)*health_bar_length);
-      }
+        // TODO: Work out this
+        health_bar_length = Math.round((100/this.health)*health_bar_length);
 
+        context.beginPath();
+        context.lineWidth = health_bar_width;
+        context.strokeStyle = health_bar_full_color;
+        context.moveTo(line_x, line_y);
+        context.lineTo(line_x + health_bar_length, line_y);
+        context.stroke();
+      } else {
+        context.beginPath();
+        context.lineWidth = health_bar_width;
+        context.strokeStyle = health_bar_full_color;
+        context.moveTo(line_x, line_y);
+        context.lineTo(line_x + health_bar_length, line_y);
+        context.stroke();
+      } 
 
-      context.beginPath();
-      context.lineWidth = health_bar_width;
-      context.strokeStyle = health_bar_full_color;
-      context.moveTo(line_x, line_y);
-      context.lineTo(line_x+health_bar_length, line_y);
-      context.stroke();
     }
   }
 
@@ -119,19 +129,18 @@ export default class Zomball extends Entity {
     }
 
     // // if we are moving towards the destination
-    // if (this.speed > 0 && this.location != this.destination) {
-    //   const destinationClone = new Vec2.Vector(this.destination.x, this.destination.y);
-    //   const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
+    if (this.speed > 0 && !this.location.equals(this.destination!)) {
+      const destinationClone = new Vec2.Vector(this.destination!.x, this.destination!.y);
+      const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
+      const distance_to_destination = vec_to_destination.length();
+      const heading = vec_to_destination.normalize();
+      const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
+      const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
 
-    //   const distance_to_destination = vec_to_destination.length();
-    //   const heading = vec_to_destination.normalize();
-    //   const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
-    //   const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
-
-    //   // new location is the current location
-    //   // plus the distance traveled vector
-    //   this.location = this.location.add(travel_vector);
-    // }
+      // new location is the current location
+      // plus the distance traveled vector
+      this.location = this.location.add(travel_vector);
+    }
   }
 
   /**

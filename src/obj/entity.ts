@@ -10,7 +10,7 @@ export default class Entity {
   health: number = 0;
   name: string = '';
   location: Vec2D.Vector = new Vec2D.Vector(0, 0);
-  destination: Vec2D.Vector = new Vec2D.Vector(0, 0);
+  destination: Vec2D.Vector | undefined;
   remove: boolean = false;
 
   world: World | null = null;
