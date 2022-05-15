@@ -76,10 +76,8 @@ export default class ZomballStateWalking extends State {
     }
 
     if (this.zomball.world?.getCloseEntity(this.zomball, this.zomball.size, 'zomball') != null) {
-      console.log("bumped")
       // reverse the destination
-      this.zomball.destination = this.zomball.location.reverse();
-      //this.zomball.destination = ((this.zomball.destination - this.zomball.location) * -1) + this.zomball.location;
+      this.zomball.destination = this.zomball.destination!.reverse();
     }
 
     // only update the direction of the zomball one in every

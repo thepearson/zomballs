@@ -126,7 +126,7 @@ export default class World {
       const size = Random.int(0, (Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MAX - Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN) + Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN);
       const one = Random.int(0, 55);
       const two = Random.int(0, 128);
-      const color: Color = new Color(one + 200, 0, 0);
+      const color: Color = new Color(one + 200, two, two, 0.8);
 
       drawCircle(context, location, color, size);
       loop += 1;
