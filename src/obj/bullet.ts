@@ -3,6 +3,8 @@ import Color from '../util/color';
 import * as Vec2 from 'vector2d';
 import drawCircle from '../util/circle';
 import { Constants } from '../constants';
+import Random from '../util/random';
+import ZomballStateEatingGrass from '../state/states/zomball_state_eating_grass';
 
 
 export default class Bullet extends Entity {
@@ -37,12 +39,16 @@ export default class Bullet extends Entity {
     if (zomball != null && zomball.brain.active_state != 'zomball-dead') {
       // Decrease zomball health
       zomball.health -= this.damage_value;
+      zomball.speed = zomball.speed - (Random.int(1, 6) / 1000);
 
       // Make zomball charge after being shot.
-      if (zomball.health > 0) {
+      if (zomball.health > 0 && zomball.brain.active_state != 'zomball-charging') {
         zomball.brain.setState("zomball-charging");
       }
 
+      const blood_spirt = new Vec2.Vector(zomball.location.x, zomball.location.y);
+      this.world.drawShotSplat(blood_spirt);
+      
       // set for removal
       this.remove = true;
 

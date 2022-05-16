@@ -4,6 +4,7 @@ import Color from './color';
 export default function drawCircle(context: CanvasRenderingContext2D, location: Vec2.Vector, color: Color, size: number) {
   context.beginPath();
   context.arc(location.x, location.y, Math.round(size/2), 0, 2 * Math.PI, false);
+  //context.fillRect(location.x, location.y, size, size);
   context.fillStyle = color.getHex();
   context.fill();
   context.lineWidth = 1;

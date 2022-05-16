@@ -78,6 +78,7 @@ export default class Color {
     let r = this.r.toString(16);
     let g = this.g.toString(16);
     let b = this.b.toString(16);
+    let a = (this.a * 255).toString(16);
   
     if (r.length == 1)
       r = "0" + r;
@@ -85,7 +86,9 @@ export default class Color {
       g = "0" + g;
     if (b.length == 1)
       b = "0" + b;
+    if (a.length == 1)
+      a = "0" + a;
   
-    return "#" + r + g + b;
+    return "#" + r + g + b + a;
   }
 }

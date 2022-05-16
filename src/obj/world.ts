@@ -133,6 +133,24 @@ export default class World {
     }
   }
 
+  drawShotSplat(bloofVec: Vec2.Vector) {
+    if (this.background) {
+      const bg_context: CanvasRenderingContext2D | null = this.background.getContext("2d");
+
+      let loop = 0;
+
+      while (loop < 5) {
+        const location = bloofVec.add(new Vec2.Vector(Random.int(-10, 10), Random.int(-10, 10)));
+        const size = Random.int(0, (Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MAX - Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN) + Constants.ZOMBALL_BLOOD_SPLATTER_CIRCLE_MIN);
+        const one = Random.int(0, 55);
+        const two = Random.int(0, 128);
+        const color: Color = new Color(one + 200, two, two, 0.8);
+  
+        drawCircle(bg_context!, location, color, size);
+        loop += 1;
+      }
+    }
+  }
 
   drawSpatter(location: Vec2.Vector): void {
     if (this.background) {
