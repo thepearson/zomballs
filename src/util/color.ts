@@ -1,30 +1,62 @@
+/**
+ * Colour helper, useful for converting between colour formats.
+ * This is probably not really needed for the TS/JS version but is
+ * more of a hangover from the Dart version of the game. Was good 
+ * learning converting it to javascript/typescript.
+ */
 export default class Color {
+
+  /**
+   * red
+   */
   r: number = 0;
+
+  /**
+   * green
+   */
   g: number = 0;
+
+  /**
+   * blue
+   */
   b: number = 0;
+
+  /**
+   * alpha
+   */
   a: number = 0.0;
 
+  /**
+   * [constructor description]
+   *
+   * @param   {number}  r  red [0 - 255]
+   * @param   {number}  g  green [0 - 255]
+   * @param   {number}  b  blue [0 - 255]
+   * @param   {number?}  a  alpha [0.0 - 1.0]
+   */
   constructor(r: number, g: number, b: number, a?: number) {
     this.r = r;
     this.g = g;
     this.b = b;
-    if (a) {
-      this.a = a;
-    } else {
-      this.a = 1.0;
-    }
+    this.a = a ? a : 1.0;
   }
 
-
-  getInt(): number {
-    // TODO: figure this out.
-    return 0; //int.parse('0x${this.hexColor()}');
-  }
-
+  /**
+   * Returns an array of RGB values
+   *
+   * @return  {Array<number>}  
+   */
   getRgb(): [number, number, number] {
     return [this.r, this.g, this.b];
   }
 
+  /**
+   * Return array of HSL values
+   * 
+   * From: https://css-tricks.com/converting-color-spaces-in-javascript/
+   *
+   * @return  {Array<number>}  
+   */
   getHsl(): [number, number, number] {
     // Make r, g, and b fractions of 1
     const r = this.r / 255;
@@ -74,21 +106,25 @@ export default class Color {
     return [h, s, l];
   }
 
-  getHex(): string {
+  /**
+   * Return HEX value of colour (inlcuding alpha)
+   * 
+   * From: https://css-tricks.com/converting-color-spaces-in-javascript/
+   *
+   * @return  {string}  
+   */
+  getHex(withAlpha: boolean = true): string {
     let r = this.r.toString(16);
     let g = this.g.toString(16);
     let b = this.b.toString(16);
     let a = (this.a * 255).toString(16);
   
-    if (r.length == 1)
-      r = "0" + r;
-    if (g.length == 1)
-      g = "0" + g;
-    if (b.length == 1)
-      b = "0" + b;
-    if (a.length == 1)
-      a = "0" + a;
+    if (r.length == 1) r = "0" + r;
+    if (g.length == 1) g = "0" + g;
+    if (b.length == 1) b = "0" + b;
+    if (a.length == 1) a = "0" + a;
   
+    if (!withAlpha) return "#" + r + g + b;
     return "#" + r + g + b + a;
   }
 }
