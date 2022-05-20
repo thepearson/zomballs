@@ -63,6 +63,15 @@ import State from './state';
     return null;
   }
 
+  /**
+   * Returns the active state or null if none active
+   *
+   * @return  {State}   [return description]
+   */
+  public getActiveStateName(): string | null {
+    return this.active_state;
+  }
+
 
   /**
    * Sets the active state, runs any exit actions for the old active

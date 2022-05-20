@@ -30,13 +30,13 @@ export default class Bullet extends Projectile {
     if (this.world == null) return;
 
     const zomball: Entity | null = this.world.getCloseEntity(this, Constants.ZOMBALL_SIZE, 'zomball');
-    if (zomball != null && zomball.brain.active_state != 'zomball-dead') {
+    if (zomball != null && zomball.brain.getActiveStateName() != 'zomball-dead') {
       // Decrease zomball health
       zomball.health -= this.damage_value;
       zomball.speed = zomball.speed - (Random.int(1, 6) / 1000);
 
       // Make zomball charge after being shot.
-      if (zomball.health > 0 && zomball.brain.active_state != 'zomball-charging') {
+      if (zomball.health > 0 && zomball.brain.getActiveStateName() != 'zomball-charging') {
         zomball.brain.setState("zomball-charging");
       }
 
@@ -50,7 +50,7 @@ export default class Bullet extends Projectile {
       const in_range: Array<Entity> = this.world.getEntitiesInRange(zomball, Constants.ZOMBALL_ALERT_RANGE, 'zomball');
 
       for (let entity of in_range) {
-        if (entity.brain.active_state != "zomball-charging") {
+        if (entity.brain.getActiveStateName() != "zomball-charging") {
           entity.brain.setState("zomball-alerted");
         }
       }
