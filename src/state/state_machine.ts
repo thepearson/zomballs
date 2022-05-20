@@ -6,10 +6,10 @@ import State from './state';
  export default class StateMachine {
 
   // Map holds all possible states for the entity
-  states: Map<string, State>;
+  private states: Map<string, State>;
 
   // This is the name of the active state
-  active_state: string | null;
+  private active_state: string | null;
 
   /**
    * Construct
@@ -26,7 +26,7 @@ import State from './state';
    *
    * @return  {void}
    */
-  addState(state: State): void {
+  public addState(state: State): void {
     this.states.set(state.name, state);
   }
 
@@ -39,7 +39,7 @@ import State from './state';
    *
    * @return  {void}    [return description]
    */
-  think(): void {
+  public think(): void {
     const currentState = this.getActiveState()
     if (currentState) {
       currentState.doActions();
@@ -56,7 +56,7 @@ import State from './state';
    *
    * @return  {State}   [return description]
    */
-  getActiveState(): State | null {
+  public getActiveState(): State | null {
     if (this.active_state == null) return null;
     const activeState = this.states.get(this.active_state);
     if (activeState) return activeState;
@@ -72,7 +72,7 @@ import State from './state';
    *
    * @return  {void}
    */
-  setState(state_name: string): void {
+  public setState(state_name: string): void {
     const currentState = this.getActiveState()
     if (currentState) currentState.exitActions()
   
@@ -80,5 +80,4 @@ import State from './state';
     const newState = this.getActiveState();
     if (newState) newState.entryActions();
   }
-
 }

@@ -4,6 +4,7 @@ import drawCircle from '../util/circle';
 import StateMachine from '../state/state_machine';
 import Color from '../util/color';
 
+
 export default class Entity {
   id: number = 0;
   spawn_time: number = 0;

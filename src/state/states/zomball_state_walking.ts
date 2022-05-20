@@ -14,7 +14,7 @@ export default class ZomballStateWalking extends State {
   /**
    * State entity
    */
-  zomball: Zomball;
+  private zomball: Zomball;
 
   /**
    * @param   {Zomball}  zomball  Zomball Entity this state belongs to
@@ -29,7 +29,7 @@ export default class ZomballStateWalking extends State {
    *
    * @return  {void}    [return description]
    */
-  chooseDestination(): void {
+  private chooseDestination(): void {
     // Destination not set, so lets choose one
     // somewhere on the game field.
     if (this.zomball.destination == null) {
@@ -86,7 +86,7 @@ export default class ZomballStateWalking extends State {
   /**
    * @see  {State.doActions}
    */
-  doActions(): void {
+  public doActions(): void {
 
     // If the Zomball is out of game range AND it's walking further away,
     // Flag it for removal, it's an idiot.
@@ -122,7 +122,7 @@ export default class ZomballStateWalking extends State {
   /**
    * @see {State.checkConditions}
    */
-  checkConditions(): string | null {
+  public checkConditions(): string | null {
     // If the zomball has zero or less health then they ded.
     if (this.zomball.health <= 0) {
       return "zomball-dead";
@@ -142,7 +142,7 @@ export default class ZomballStateWalking extends State {
   /** 
    * @see {State.entryActions}
    */
-  entryActions(): void {
+  public entryActions(): void {
     // Good morning, zomball has just awoken, where is it going?
     this.chooseDestination();
   }
@@ -150,7 +150,7 @@ export default class ZomballStateWalking extends State {
   /**
    * @see {State.exitActions}
    */
-  exitActions(): void {
+  public exitActions(): void {
     // nothing
   }
 }

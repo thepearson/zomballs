@@ -12,48 +12,49 @@ export default class Game {
   /**
    * Event for the canvs.onMouseMove event
    */
-  mouse_move: any = null;
+  private mouse_move: any = null;
 
   /**
    * Event for the canvas.onMouseDown event
    */
-  mouse_down: any = null;
+  private mouse_down: any = null;
 
   /**
    * Game canvas
    */
-  canvas: HTMLCanvasElement | null = null;
+  private canvas: HTMLCanvasElement | null = null;
 
   /**
    * Canvas redering context
    */
-  context: CanvasRenderingContext2D;
+  private context: CanvasRenderingContext2D;
 
   /**
    * Timestamp when last frame was processed
    * used for calculating the deltaTime and
    * FPS.
    */
-  oldTimestamp: DOMHighResTimeStamp = 0.0;
+  private oldTimestamp: DOMHighResTimeStamp = 0.0;
 
   /**
    * Game world object
    */
-  world: World | undefined;
+  private world: World | undefined;
 
   /**
-   * Holder for FPS, useful when needing to render this within the game environment
+   * Holder for FPS, useful when needing to render 
+   * this within the game environment
    */
-  fps: number = 0;
+  private fps: number = 0;
 
   /**
    * Timer helper for adding enemy entities
    */
-  last_run_add: DOMHighResTimeStamp = 0;
+  private last_run_add: DOMHighResTimeStamp = 0;
 
   /**
-   * [constructor description]
-   *
+   * Constructor
+   * 
    * @param   {HTMLCanvasElement}         canvas   This is the target canvas for our game
    * @param   {CanvasRenderingContext2D}  context  This is the contet for the canvas
    */
@@ -131,7 +132,7 @@ export default class Game {
    *
    * @return  {void}
    */
-  process(timestamp: DOMHighResTimeStamp): void {
+  public process(timestamp: DOMHighResTimeStamp): void {
 
     // Short circut, these MUST exist
     if (this.canvas == null || this.context == null) return;
@@ -146,7 +147,7 @@ export default class Game {
     this.oldTimestamp = timestamp;
 
     // Trigger World calcs
-    // TODO: async? Performance improovment at a later date.
+    // TODO: async? Performance improvment at a later date.
     this.world?.process(dt, timestamp);
 
     // Render things

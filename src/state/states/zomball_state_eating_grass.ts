@@ -9,14 +9,14 @@ import Random from "../../util/random";
  */
 export default class ZomballStateEatingGrass extends State {
 
-  zomball: Zomball;
+  private zomball: Zomball;
 
   constructor( zomball: Zomball) {
     super('zomballe-eating-grass');
     this.zomball = zomball;
   }
 
-  entryActions(): void {
+  public entryActions(): void {
     // increase speed
     this.zomball.speed = 0;
 
@@ -24,7 +24,7 @@ export default class ZomballStateEatingGrass extends State {
     this.zomball.destination = this.zomball.location;
   }
 
-  checkConditions(): string | null {
+  public checkConditions(): string | null {
     if (this.zomball.health <= 0) {
       return "zomball-dead";
     }
@@ -44,10 +44,11 @@ export default class ZomballStateEatingGrass extends State {
     return null;
   }
 
-  doActions(): void {
+  public doActions(): void {
     // nothing
   }
-  exitActions(): void {
+  
+  public exitActions(): void {
     // nothing
   }
 }

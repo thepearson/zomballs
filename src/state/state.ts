@@ -22,26 +22,26 @@ export default abstract class State {
    *
    * @return  {void}
    */
-  abstract doActions(): void;
+  public abstract doActions(): void;
 
   /**
    * Check the conditions, and change state if needed
    *
    * @return  {string|null}  new state if we need to change
    */
-  abstract checkConditions(): string | null;
+  public abstract checkConditions(): string | null;
 
   /**
    * Things to do when we first enter this state
    *
    * @return  {void}
    */
-  abstract entryActions(): void;
+  public abstract entryActions(): void;
 
   /**
    * Things to do before we leave this state
    *
    * @return  {void} 
    */
-  abstract exitActions(): void;
+  public abstract exitActions(): void;
 }

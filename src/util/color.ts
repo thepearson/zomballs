@@ -9,22 +9,22 @@ export default class Color {
   /**
    * red
    */
-  r: number = 0;
+  private r: number = 0;
 
   /**
    * green
    */
-  g: number = 0;
+  private g: number = 0;
 
   /**
    * blue
    */
-  b: number = 0;
+  private b: number = 0;
 
   /**
    * alpha
    */
-  a: number = 0.0;
+  private a: number = 0.0;
 
   /**
    * [constructor description]
@@ -46,7 +46,7 @@ export default class Color {
    *
    * @return  {Array<number>}  
    */
-  getRgb(): [number, number, number] {
+  public getRgb(): [number, number, number] {
     return [this.r, this.g, this.b];
   }
 
@@ -57,7 +57,7 @@ export default class Color {
    *
    * @return  {Array<number>}  
    */
-  getHsl(): [number, number, number] {
+  public getHsl(): [number, number, number] {
     // Make r, g, and b fractions of 1
     const r = this.r / 255;
     const g = this.g / 255;
@@ -113,7 +113,7 @@ export default class Color {
    *
    * @return  {string}  
    */
-  getHex(withAlpha: boolean = true): string {
+  public getHex(withAlpha: boolean = true): string {
     let r = this.r.toString(16);
     let g = this.g.toString(16);
     let b = this.b.toString(16);

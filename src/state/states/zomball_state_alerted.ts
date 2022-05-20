@@ -15,7 +15,7 @@ export default class ZomballStateAlerted extends State {
   /**
    * Zomball
    */
-  zomball: Zomball;
+  private zomball: Zomball;
 
   /**
    * @param   {Zomball}  zomball  The Zomball
@@ -28,7 +28,7 @@ export default class ZomballStateAlerted extends State {
   /**
    * @see {State.entryActions}
    */
-  entryActions(): void {
+  public entryActions(): void {
     // Zomball is shocked, it is not moving.
     this.zomball.speed = 0;
 
@@ -41,7 +41,7 @@ export default class ZomballStateAlerted extends State {
   /**
    * @see {State.entryActions}
    */
-  checkConditions(): string | null {
+  public checkConditions(): string | null {
 
     // If zomball is shot while standing here, it ded.
     if (this.zomball.health <= 0) {
@@ -60,14 +60,14 @@ export default class ZomballStateAlerted extends State {
   /**
    * @see {State.entryActions}
    */
-  doActions(): void {
+  public doActions(): void {
     // Nothing, Zomball is shocked!
   }
 
   /**
    * @see {State.entryActions}
    */
-  exitActions(): void {
+  public exitActions(): void {
     // nothing
   }
 

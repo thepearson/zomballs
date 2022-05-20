@@ -8,7 +8,7 @@ export default class ZomballStateCharging extends State {
   /**
    * The zomball
    */
-  zomball: Zomball;
+  private zomball: Zomball;
 
   /**
    * @param   {Zomball}  zomball  The Zomball
@@ -21,7 +21,7 @@ export default class ZomballStateCharging extends State {
   /**
    * @see {State.entryActions}
    */
-  entryActions(): void {
+  public entryActions(): void {
     // Increase speed, anger give zomball strength!
     this.zomball.speed = Constants.ZOMBALL_CHARGE_SPEED;
 
@@ -36,7 +36,7 @@ export default class ZomballStateCharging extends State {
   /**
    * @see {State.checkConditions}
    */
-  checkConditions(): string | null {
+  public checkConditions(): string | null {
     // It died
     if (this.zomball.health <= 0) {
       return "zomball-dead";
@@ -48,14 +48,14 @@ export default class ZomballStateCharging extends State {
   /**
    * @see {State.doActions}
    */
-  doActions(): void {
+  public doActions(): void {
     // nothing
   }
 
   /**
    * @see {State.exitActions}
    */
-  exitActions(): void {
+  public exitActions(): void {
     // nothing
   }
 }

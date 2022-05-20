@@ -13,19 +13,19 @@ export default class ZomballStateDead extends State {
   /**
    * The zomball that is dead
    */
-  zomball: Zomball;
+  private zomball: Zomball;
 
   /**
    * A colour to assign to a ded one.
    */
-  dead_color: Color;
+  private dead_color: Color;
 
   /**
    * We only persist the dead bodies for a period of time, 
    * this variable allows us to keep track of the bodies to 
    * dispose of.
    */
-  entry_time: number = 0;
+  private entry_time: number = 0;
 
   /**
    * @param   {Zomball}  zomball  The Zomball
@@ -39,7 +39,7 @@ export default class ZomballStateDead extends State {
   /**
    * @see {State.entryActions}
    */
-  entryActions(): void {
+  public entryActions(): void {
     // Zomball dead, it has no speed.
     this.zomball.speed = 0;
 
@@ -62,7 +62,7 @@ export default class ZomballStateDead extends State {
   /**
    * @see {State.doActions}
    */
-  doActions(): void {
+  public doActions(): void {
     // Check if we can dispose of the body yet?
     const now = Date.now();
     if (Math.round((now-this.entry_time)/1000) > Constants.ZOMBALL_DEATH_TIME) {
@@ -73,14 +73,14 @@ export default class ZomballStateDead extends State {
   /**
    * @see {State.checkConditions}
    */
-  checkConditions(): string | null {
+  public checkConditions(): string | null {
     return null;
   }
 
   /**
    * @see {State.exitAction}
    */
-  exitActions(): void {
+  public exitActions(): void {
     // nothing
   }
 }
