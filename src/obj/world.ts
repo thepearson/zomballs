@@ -74,10 +74,12 @@ export default class World {
 
   fireBullet(): void {
     if (this.player && this.player.location instanceof Vec2.Vector && this.target instanceof Vec2.Vector) {
-      const bullet: Bullet = new Bullet(this.player?.location, this.target);
-      bullet.world = this;
-      this.addEntity(bullet);
-      this.target = null;
+      const dst = new Vec2.Vector(this.target.x, this.target.y);
+      this.player.firePrimaryWeapon(dst);
+      // const bullet: Bullet = new Bullet(this.player?.location, this.target);
+      // bullet.world = this;
+      // this.addEntity(bullet);
+      // this.target = null;
     }
   }
 

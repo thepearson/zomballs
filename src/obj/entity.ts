@@ -1,11 +1,14 @@
 import * as Vec2D from 'vector2d'
 import World from './world';
+import drawCircle from '../util/circle';
 import StateMachine from '../state/state_machine';
+import Color from '../util/color';
 
 export default class Entity {
   id: number = 0;
   spawn_time: number = 0;
-  size: number = 0;
+  size: number = 4;
+  color: Color = new Color(0, 0, 0);
   speed: number = 0;
   damage_value: number = 0;
   health: number = 0;
@@ -24,7 +27,7 @@ export default class Entity {
   }
 
   render(context: CanvasRenderingContext2D) {
-    // do stuff
+    drawCircle(context, this.location, this.color, this.size);
   }
 
   process(gameTime: number) {

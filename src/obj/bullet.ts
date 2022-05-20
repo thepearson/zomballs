@@ -1,23 +1,18 @@
+import Projectile from './projectile';
 import Entity from './entity';
 import Color from '../util/color';
 import * as Vec2 from 'vector2d';
 import drawCircle from '../util/circle';
 import { Constants } from '../constants';
 import Random from '../util/random';
-import ZomballStateEatingGrass from '../state/states/zomball_state_eating_grass';
 
 
-export default class Bullet extends Entity {
+export default class Bullet extends Projectile {
+
   color: Color = new Color(0, 0, 0);
 
-  constructor(location: Vec2.Vector, destination: Vec2.Vector) {
+  constructor() {
     super("bullet")
-
-    this.location = new Vec2.Vector(location.x, location.y);
-    this.destination = new Vec2.Vector(destination.x, destination.y);
-    this.size = 1;
-    this.damage_value = Constants.BULLET_DAMAGE_VALUE;
-    this.speed = 1;
   }
 
   /**
@@ -25,7 +20,6 @@ export default class Bullet extends Entity {
    */
   render(context: CanvasRenderingContext2D) {
     super.render(context);
-    drawCircle(context, this.location, this.color, this.size);
   }
 
   /**

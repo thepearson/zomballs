@@ -2,14 +2,20 @@ import Entity from "./entity";
 import * as Vec2D from 'vector2d'
 import { Constants } from "../constants";
 import Color from "../util/color"
+import Pistol from "./pistol";
+import Weapon from "./weapon";
+import World from "./world";
 
 
 export default class Player extends Entity {
 
-  color: Color | null;
+  weapon_primary: Weapon | null = null;
+  weapon_secondary: Weapon | null = null;
 
-  constructor() {
+  constructor(world: World) {
     super("player");
+
+    this.world = world;
 
     this.location = new Vec2D.Vector(
       Constants.GAME_SIZE.width / 2, 
@@ -19,30 +25,19 @@ export default class Player extends Entity {
     this.size = Constants.PLAYER_SIZE;
     this.health = Constants.PLAYER_DEFAULT_HEALTH;
     this.color = new Color(128, 128, 255);
+
+    this.weapon_primary = new Pistol();
   }
 
   takeDamage(value: number) {
     this.health -= value;
   }
 
-  /**
-   * Render the zomball
-   * 
-   */
-  render(context: CanvasRenderingContext2D) {
-    super.render(context);
+  firePrimaryWeapon(target: Vec2D.Vector) {
+    this.weapon_primary?.fire(target, this.world!);
+  }
 
-    if (!this.color) this.color = new Color(0, 0, 0);
-    
-    if (this.location == null) return;
-
-    context.beginPath();
-    context.arc(this.location.toObject().x, this.location.toObject().y, Math.round(this.size/2), 0, 2 * Math.PI);
-    context.fillStyle = this.color.getHex();
-    context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = this.color.getHex();
-    context.stroke();
+  fireSecondaryWeapon() {
 
   }
 

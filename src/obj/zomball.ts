@@ -41,40 +41,8 @@ export default class Zomball extends Entity {
    */
   render(context: CanvasRenderingContext2D): void {
     super.render(context);
-
-    // if we are using pre-rendering contexts
-    if (Constants.GAME_UTILIZE_PRERENDER == true) {
-      // TODO: Re-implement pre-prerendering for dead zomballs
-      // if (this.dead) {
-      // var canvas_offset = 1;
-      // if (this.brain.active_state == 'zomball-dead') {
-      //   // if this is the first render, then we need to render
-      //   if (this.world.zomball_dead_prerender == null) {
-      //     this.world.zomball_dead_prerender = new Element.html('<canvas/>');
-      //     this.world.zomball_dead_prerender.width = this.size+canvas_offset;
-      //     this.world.zomball_dead_prerender.height = this.size+canvas_offset;
-      //     draw_circle(this.world.zomball_dead_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), new Color(128, 64, 0), this.size);
-      //   }
-
-      //   // render
-      //   context.drawImage(this.world.zomball_dead_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
-      // } else {
-      //   // if this is the first render, then we need to render
-      //   if (this.world.zomball_prerender == null) {
-      //     this.world.zomball_prerender = new Element.html('<canvas/>');
-      //     this.world.zomball_prerender.width = this.size+canvas_offset;
-      //     this.world.zomball_prerender.height = this.size+canvas_offset;
-      //     draw_circle(this.world.zomball_prerender.getContext("2d"), new Vector2(((this.size+canvas_offset)/2), ((this.size+canvas_offset)/2)), this.color, this.size);
-      //   }
-
-      //   // render
-      //   context.drawImage(this.world.zomball_prerender, (this.location.x-(this.size/2)), (this.location.y-(this.size/2)));
-      // }
-    } else {
-      drawCircle(context, this.location, this.color, this.size);
-    }
-
     
+    // Render health bar
     if (this.health > 0) {
       let health_bar_length = 20;
       let health_bar_width = 3;

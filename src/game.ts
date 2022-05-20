@@ -28,7 +28,7 @@ export default class Game {
 
   setUp() {
     this.world = new World();
-    this.world.addPlayer(new Player());
+    this.world.addPlayer(new Player(this.world));
 
     // Add events
     if (this.canvas instanceof HTMLCanvasElement) {
@@ -39,7 +39,7 @@ export default class Game {
       this.mouse_down = this.canvas.addEventListener("mousedown", (event: MouseEvent) => {
         const mouse_pos = new Vec2.Vector(event.clientX, event.clientY);
         this.world?.setTargetPosition(mouse_pos);
-        this.world?.fireBullet();
+        this.world?.player!.firePrimaryWeapon(mouse_pos);
       })
     }
   }
