@@ -5,24 +5,46 @@ import Random from '../../util/random';
 import State from '../state';
 
 
+/**
+ * Zomball walking state, just meandering about, bumping into each other,
+ * not agro or charging. Just a lovely day on the field minding it's own business.
+ */
 export default class ZomballStateWalking extends State {
 
+  /**
+   * State entity
+   */
   zomball: Zomball;
 
+  /**
+   * @param   {Zomball}  zomball  Zomball Entity this state belongs to
+   */
   constructor(zomball: Zomball) {
     super("zomball-walking");
     this.zomball = zomball;
   }
 
+  /**
+   * [chooseDestination description]
+   *
+   * @return  {void}    [return description]
+   */
   chooseDestination(): void {
-    // destination not set, so lets choose one
-    // somewhere on the game field
+    // Destination not set, so lets choose one
+    // somewhere on the game field.
     if (this.zomball.destination == null) {
       this.zomball.destination = new Vec2.Vector(
         Random.int(0, Constants.GAME_SIZE.width),
         Random.int(0, Constants.GAME_SIZE.height)
       );
     } else {
+      /**
+      TODO: Ported directly from Dart, it's currently not behaving correctly.
+      
+      Requirements: if a zomball is walking it may change it's direction slightly.
+
+      */
+
       // destination is set so lets choose one close
       // to where the current one is. so we dont get crazy jerky
       // movements
@@ -61,18 +83,26 @@ export default class ZomballStateWalking extends State {
     }
   }
 
+  /**
+   * @see  {State.doActions}
+   */
   doActions(): void {
 
+    // If the Zomball is out of game range AND it's walking further away,
+    // Flag it for removal, it's an idiot.
     if (this.zomball.world?.outOfRange(this.zomball.destination!) &&
       this.zomball.world?.outOfRange(this.zomball.location)) {
       this.zomball.remove = true;
     }
 
+    // If another 'zomball' is 'bumped' into then reverse the current direction
     if (this.zomball.world?.getCloseEntity(this.zomball, this.zomball.size, 'zomball') != null) {
-      // reverse the destination
+      // Reverse the destination
       this.zomball.destination = this.zomball.destination!.reverse();
     }
 
+    // If a zomball has reached it's destination, then lets 
+    // randomly, maybe choose another destination.
     if (this.zomball.location.equals(this.zomball.destination!)) {
       if (Random.int(0, Constants.ZOMBALL_DEST_REACH_MOVE_POSSIBILITY) == 0) {        
         this.zomball.destination = new Vec2.Vector(
@@ -89,23 +119,37 @@ export default class ZomballStateWalking extends State {
     }
   }
 
+  /**
+   * @see {State.checkConditions}
+   */
   checkConditions(): string | null {
+    // If the zomball has zero or less health then they ded.
     if (this.zomball.health <= 0) {
       return "zomball-dead";
     }
 
+    // If a zomball is close to the player (within ZOMBALL_ALERT_RANGE), 
+    // then trigger a charge possibility.
     if (this.zomball.world?.withinRange(this.zomball.location, this.zomball.world?.player?.location!, Constants.ZOMBALL_ALERT_RANGE)) {
       if (Random.int(0, Constants.ZOMBALL_CHARGE_POSSIBILITY) == 0) {
         return "zomball-charging";
       }
     }
+
     return null;
   }
 
+  /** 
+   * @see {State.entryActions}
+   */
   entryActions(): void {
+    // Good morning, zomball has just awoken, where is it going?
     this.chooseDestination();
   }
 
+  /**
+   * @see {State.exitActions}
+   */
   exitActions(): void {
     // nothing
   }

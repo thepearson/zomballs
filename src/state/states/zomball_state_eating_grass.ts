@@ -4,6 +4,9 @@ import * as Vec2 from "vector2d";
 import { Constants } from "../../constants";
 import Random from "../../util/random";
 
+/**
+ * Currently unused
+ */
 export default class ZomballStateEatingGrass extends State {
 
   zomball: Zomball;
