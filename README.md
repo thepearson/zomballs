@@ -1,6 +1,6 @@
 # Zomballs
 
-This is a basic asilly little game thing I've made.
+This is a basic silly little game thing thing I've made/am making.
 
 ![Screenshot](https://raw.githubusercontent.com/thepearson/zomballs/main/img/screenshot.png)
 
