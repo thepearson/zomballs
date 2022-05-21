@@ -9,17 +9,11 @@ import Random from '../util/random';
 
 export default class Bullet extends Projectile {
 
-  color: Color = new Color(0, 0, 0);
-
+  /**
+   * Constructor, initiates a "bullet"
+   */
   constructor() {
     super("bullet")
-  }
-
-  /**
-   * Render the zomball
-   */
-  render(context: CanvasRenderingContext2D) {
-    super.render(context);
   }
 
   /**
@@ -27,10 +21,14 @@ export default class Bullet extends Projectile {
    */
   process(gameTime: number): void {
     super.process(gameTime);
+
+    // short circuit if world is null
     if (this.world == null) return;
+
 
     const zomball: Entity | null = this.world.getCloseEntity(this, Constants.ZOMBALL_SIZE, 'zomball');
     if (zomball != null && zomball.brain.getActiveStateName() != 'zomball-dead') {
+    
       // Decrease zomball health
       zomball.health -= this.damage_value;
       zomball.speed = zomball.speed - (Random.int(1, 6) / 1000);
