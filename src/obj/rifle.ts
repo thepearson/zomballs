@@ -1,9 +1,14 @@
 import Weapon from "./weapon";
-import World from "./world";
 import { Constants } from "../constants";
 
+/**
+ * Player weapon: Rifle
+ */
 export default class Rifle extends Weapon {
 
+  /**
+   * Set's Rifle properties.
+   */
   constructor() {
     super("bullet");
 

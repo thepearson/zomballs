@@ -92,29 +92,66 @@ export default class Entity {
     this.brain = new StateMachine();
   }
 
-
-  setColor(color: Color) {
+  /**
+   * Sets Color
+   *
+   * @param   {Color}  color  Color to set on the entity
+   *
+   * @return  {void}
+   */
+  public setColor(color: Color): void {
     this.color = color;
   }
 
-  setSize(size: number) {
+  /**
+   * Sets the size of the entity
+   *
+   * @param   {number}  size  Size in pixels
+   *
+   * @return  {void}
+   */
+  public setSize(size: number): void {
     this.size = size;
   }
 
-  setDamage(damage: number) {
+  /**
+   * Sets the damage that the entity does
+   *
+   * @param   {number}  damage  Damage in health points
+   *
+   * @return  {void}
+   */
+  public setDamage(damage: number): void {
     this.damage_value = damage;
   }
 
-  setSpeed(speed: number) {
+  /**
+   * Sets the speed of the entitiy
+   *
+   * @param   {number}  speed  Speed
+   *
+   * @return  {void}
+   */
+  public setSpeed(speed: number): void {
     this.speed = speed;
   }
 
-  setLocation(location: Vec2.Vector) {
+  /**
+   * Set's the locaiton of the entity
+   *
+   * @var {Vec2.Vector}   location Current location
+   */
+  public setLocation(location: Vec2.Vector): void {
     this.location = location;
   }
 
-  setDestination(location: Vec2.Vector) {
-    this.destination = location;
+  /**
+   * Sets the destination of the entity
+   *
+   * @var {Vec2.Vector}   destination Entity destination
+   */
+  public setDestination(destination: Vec2.Vector): void {
+    this.destination = destination;
   }
 
   /**
@@ -137,6 +174,20 @@ export default class Entity {
    */
   public process(gameTime: number): void {
     this.brain.think();
+
+    // If the entity is moving, and hasn't yet reached it's destination
+    if (this.speed > 0 && !this.location.equals(this.destination!)) {
+      const destinationClone = new Vec2.Vector(this.destination!.x, this.destination!.y);
+      const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
+      const distance_to_destination = vec_to_destination.length();
+      const heading = vec_to_destination.normalize();
+      const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
+      const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
+
+      // new location is the current location
+      // plus the distance traveled vector
+      this.location = this.location.add(travel_vector);
+    }
   }
 
   

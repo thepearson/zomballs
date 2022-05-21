@@ -97,20 +97,6 @@ export default class Zomball extends Entity {
       this.world.player.takeDamage(this.damage_value);
       this.remove = true;
     }
-
-    // // if we are moving towards the destination
-    if (this.speed > 0 && !this.location.equals(this.destination!)) {
-      const destinationClone = new Vec2.Vector(this.destination!.x, this.destination!.y);
-      const vec_to_destination: Vec2.Vector = destinationClone.subtract(this.location);
-      const distance_to_destination = vec_to_destination.length();
-      const heading = vec_to_destination.normalize();
-      const distance_traveled: number = Math.min(distance_to_destination, gameTime * this.speed);
-      const travel_vector: Vec2.Vector = heading.mulS(distance_traveled);
-
-      // new location is the current location
-      // plus the distance traveled vector
-      this.location = this.location.add(travel_vector);
-    }
   }
 
   /**
